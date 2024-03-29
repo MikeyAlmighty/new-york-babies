@@ -1,15 +1,15 @@
 package com.example.newyorkbabies.processor;
 
-import com.example.newyorkbabies.model.BabyDto;
+import com.example.newyorkbabies.model.Baby;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CSVItemProcessor implements ItemProcessor<BabyDto, BabyDto> {
+public class CSVItemProcessor implements ItemProcessor<Baby, Baby> {
 
     @Override
-    public BabyDto process(BabyDto record) throws Exception {
-        System.out.println("BabyRecord: " + record.getFirstName());
-        return null;
+    public Baby process(Baby record) throws Exception {
+        System.out.println("BabyRecord: " + record.toString());
+        return record;
     }
 }

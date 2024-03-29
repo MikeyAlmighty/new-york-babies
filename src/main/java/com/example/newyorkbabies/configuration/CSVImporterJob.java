@@ -1,17 +1,17 @@
 package com.example.newyorkbabies.configuration;
 
-import com.example.newyorkbabies.model.BabyDto;
+import com.example.newyorkbabies.model.Baby;
 import com.example.newyorkbabies.processor.CSVItemProcessor;
 import com.example.newyorkbabies.repository.BabyRepository;
-import com.example.newyorkbabies.writer.CSVItemWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
@@ -37,46 +37,53 @@ public class CSVImporterJob {
     public Job job(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new JobBuilder("CSVImporterJob", jobRepository)
             .incrementer(new RunIdIncrementer())
-            .start(chunkStep(jobRepository, platformTransactionManager))
-            .build();
+            .flow(chunkStep(jobRepository, platformTransactionManager))
+            .end().build();
     }
 
     @Bean
     public Step chunkStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new StepBuilder("First Chunk", jobRepository)
-                .<BabyDto, BabyDto>chunk(3, platformTransactionManager)
+                .<Baby, Baby>chunk(5, platformTransactionManager)
                 .reader(flatFileItemReader())
                 .processor(csvItemProcessor)
-                .writer(writer())
+                .writer(itemWriter())
                 .build();
     }
 
-    public FlatFileItemReader<BabyDto> flatFileItemReader() {
-        FlatFileItemReader<BabyDto> flatFileItemReader = new FlatFileItemReader<BabyDto>();
+    public FlatFileItemReader<Baby> flatFileItemReader() {
+        FlatFileItemReader<Baby> itemReader = new FlatFileItemReader<>();
 
-        flatFileItemReader.setResource(new FileSystemResource(new File(("/home/mikey/Dev/new-york-babies/src/main/resources/Popular_Baby_Names.csv"))));
-        flatFileItemReader.setLineMapper(new DefaultLineMapper<>() {
-            {
-                setLineTokenizer(new DelimitedLineTokenizer() {
-                    {
-                        setNames("Year Of Birth", "Gender", "Ethnicity", "First Name", "Count", "Rank");
-                    }
-                });
-                setFieldSetMapper(new BeanWrapperFieldSetMapper<BabyDto>() {
-                    {
-                        setTargetType(BabyDto.class);
-                    }
-                });
-            }
-        });
+        itemReader.setResource(new FileSystemResource(new File(("/home/mikey/Dev/new-york-babies/src/main/resources/Popular_Baby_Names.csv"))));
+        itemReader.setName("csvReader");
+        itemReader.setLinesToSkip(1);
+        itemReader.setLineMapper(lineMapper());
 
-        flatFileItemReader.setLinesToSkip(1);
-        flatFileItemReader.setStrict(false);
-
-        return flatFileItemReader;
+        return itemReader;
     }
 
-    private ItemWriter<? super BabyDto> writer() {
-        return babyRepository::saveAll;
+    private LineMapper<Baby> lineMapper() {
+        DefaultLineMapper<Baby> lineMapper = new DefaultLineMapper<>();
+        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
+
+        lineTokenizer.setDelimiter(",");
+        lineTokenizer.setStrict(false);
+        lineTokenizer.setNames("Year Of Birth", "Gender", "Ethnicity", "First Name", "Count", "Score");
+
+        BeanWrapperFieldSetMapper<Baby> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(Baby.class);
+
+        lineMapper.setLineTokenizer(lineTokenizer);
+        lineMapper.setFieldSetMapper(fieldSetMapper);
+
+        return lineMapper;
+    }
+
+    @Bean
+    public RepositoryItemWriter<Baby> itemWriter() {
+        RepositoryItemWriter<Baby> writer = new RepositoryItemWriter<>();
+        writer.setRepository(babyRepository);
+        writer.setMethodName("save");
+        return writer;
     }
 }
