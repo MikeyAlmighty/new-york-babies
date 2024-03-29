@@ -44,7 +44,7 @@ public class CSVImporterJob {
     @Bean
     public Step chunkStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new StepBuilder("First Chunk", jobRepository)
-                .<Baby, Baby>chunk(5, platformTransactionManager)
+                .<Baby, Baby>chunk(50, platformTransactionManager)
                 .reader(flatFileItemReader())
                 .processor(csvItemProcessor)
                 .writer(itemWriter())
