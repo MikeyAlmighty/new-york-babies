@@ -4,4 +4,4 @@ CSV DATASET: [Popular Baby Names in New York](https://catalog.data.gov/dataset/p
 
 ## Description
 - Maps CSV (50k records) to DB using Spring Batch
-- CRUD layer over BabyIndex
+- CRUD layer over BabyIndex (Sorting/Pagination)
