@@ -16,7 +16,6 @@ public class JobController {
         this.service = service;
     }
 
-
     @GetMapping("/start/{jobName}")
     public String startJob(@PathVariable String jobName) {
         service.startJob(jobName);

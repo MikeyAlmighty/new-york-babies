@@ -36,4 +36,3 @@ public class Baby {
     @Column(name = "SCORE")
     private Integer score;
 }
-

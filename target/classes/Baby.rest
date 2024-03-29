@@ -1,0 +1,15 @@
+#GET ALL BABIES
+GET localhost:8080/api/baby
+
+###
+#GET ALL BABIES
+GET localhost:8080/api/baby/firstName
+
+###
+
+#GET PAGINATED BABIES
+GET localhost:8080/api/baby/pagination/0/10
+###
+
+#GET PAGINATED AND BABIES
+GET localhost:8080/api/baby/pagination/0/10/firstName
