@@ -18,6 +18,8 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.io.File;
@@ -27,6 +29,8 @@ public class CSVImporterJob {
     private final CSVItemProcessor csvItemProcessor;
 
     private final BabyRepository babyRepository;
+    private final int CHUNK_SIZE = 50;
+    private final int CONCURRENCY_LIMIT = 10;
 
     public CSVImporterJob(CSVItemProcessor csvItemProcessor, BabyRepository babyRepository) {
         this.csvItemProcessor = csvItemProcessor;
@@ -44,11 +48,18 @@ public class CSVImporterJob {
     @Bean
     public Step chunkStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new StepBuilder("First Chunk", jobRepository)
-                .<Baby, Baby>chunk(50, platformTransactionManager)
+                .<Baby, Baby>chunk(CHUNK_SIZE, platformTransactionManager)
                 .reader(flatFileItemReader())
                 .processor(csvItemProcessor)
                 .writer(itemWriter())
+                .taskExecutor(taskExecutor())
                 .build();
+    }
+
+    private TaskExecutor taskExecutor() {
+        SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
+        asyncTaskExecutor.setConcurrencyLimit(CONCURRENCY_LIMIT);
+        return  asyncTaskExecutor;
     }
 
     public FlatFileItemReader<Baby> flatFileItemReader() {
