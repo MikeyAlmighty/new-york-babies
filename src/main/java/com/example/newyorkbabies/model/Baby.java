@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "baby_info")
 public class Baby {
+    @Id
+    @Column(name="id")
+    private String id;
+
     @Column(name = "YEAR_OF_BIRTH")
     private int yearOfBirth;
 
@@ -23,7 +27,6 @@ public class Baby {
     @Column(name = "ETHNICITY")
     private String ethnicity;
 
-    @Id
     @Column(name = "FIRST_NAME")
     private String firstName;
 
