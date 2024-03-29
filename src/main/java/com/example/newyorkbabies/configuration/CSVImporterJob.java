@@ -15,6 +15,7 @@ import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -27,10 +28,13 @@ import java.io.File;
 @Configuration
 public class CSVImporterJob {
     private final CSVItemProcessor csvItemProcessor;
-
     private final BabyRepository babyRepository;
-    private final int CHUNK_SIZE = 50;
-    private final int CONCURRENCY_LIMIT = 10;
+
+   @Value("${batch.job.chunk.size}")
+    private int CHUNK_SIZE;
+
+    @Value("${batch.job.concurrency.limit}")
+    private int CONCURRENCY_LIMIT;
 
     public CSVImporterJob(CSVItemProcessor csvItemProcessor, BabyRepository babyRepository) {
         this.csvItemProcessor = csvItemProcessor;
@@ -60,7 +64,7 @@ public class CSVImporterJob {
     public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
         asyncTaskExecutor.setConcurrencyLimit(CONCURRENCY_LIMIT);
-        return  asyncTaskExecutor;
+        return asyncTaskExecutor;
     }
 
     public FlatFileItemReader<Baby> flatFileItemReader() {
