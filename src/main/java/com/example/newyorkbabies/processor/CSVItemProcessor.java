@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 public class CSVItemProcessor implements ItemProcessor<Baby, Baby> {
 
     @Override
-    public Baby process(Baby record) throws Exception {
-        System.out.println("BabyRecord: " + record.toString());
-        return record;
+    public Baby process(Baby baby) throws Exception {
+        System.out.println("Baby: " + baby.toString());
+        return baby;
     }
 }

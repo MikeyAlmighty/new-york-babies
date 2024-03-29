@@ -56,7 +56,8 @@ public class CSVImporterJob {
                 .build();
     }
 
-    private TaskExecutor taskExecutor() {
+    @Bean
+    public TaskExecutor taskExecutor() {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
         asyncTaskExecutor.setConcurrencyLimit(CONCURRENCY_LIMIT);
         return  asyncTaskExecutor;
