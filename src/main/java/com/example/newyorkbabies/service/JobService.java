@@ -28,11 +28,9 @@ public class JobService {
             .toJobParameters();
 
         try {
-            JobExecution jobExecution = null;
             if (jobName.equals("CSVImporterJob")) {
                 jobLauncher.run(csvImporterJob, jobParameters);
             }
-            System.out.println("jobExecutionId = " + jobExecution.getId());
         } catch (Exception exception) {
             System.out.println("Error: Exception while trying to start job: " + exception);
         }
