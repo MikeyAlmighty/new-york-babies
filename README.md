@@ -1,8 +1,13 @@
 # New York Baby Name index
 
-Why ? Easter Weekend.
-
 [DATASET: Popular Baby Names in New York](https://catalog.data.gov/dataset/popular-baby-names)
+
+- Conversion of CSV data to DB Entity using `Spring-batch`
+- CRUD/REST Interface over the data
+- Searching and Sorting functionality
+
+> Why ? Easter Weekend...
+
 
 ## Back End
 ###  `new-york-babies`
