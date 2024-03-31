@@ -42,7 +42,7 @@ export const Table = () => {
             const response =
                 !(searchTerm.length > 0)
                     ? await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}/${sortOptions.isDescending ? "ASC" : "DSC"}`)
-                    : await fetch(`http://localhost:8080/api/baby/${offset}/${pageSize}/search?term=${searchTerm}`);
+                    : await fetch(`http://localhost:8080/api/baby/search/${offset}/${pageSize}/${sortingField}/${sortOptions.isDescending ? "ASC" : "DSC"}?term=${searchTerm}`);
 
             const jsonData = await response.json();
             const data = jsonData.response.content;

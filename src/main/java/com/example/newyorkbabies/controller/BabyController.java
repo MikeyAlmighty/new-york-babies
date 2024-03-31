@@ -40,15 +40,21 @@ public class BabyController {
 
     //    SORTING AND PAGINATING
     @GetMapping("/pagination/{offset}/{pageSize}/{field}/{direction}")
-    public APIResponse<Page<Baby>> getBabiesWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field , @PathVariable String direction) {
+    public APIResponse<Page<Baby>> getBabiesWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field, @PathVariable String direction) {
         Page<Baby> allBabiesWithPaginationAndSorting = babyService.findAllBabiesWithPaginationAndSorting(offset, pageSize, field, direction);
         return new APIResponse<>(allBabiesWithPaginationAndSorting.getSize(), allBabiesWithPaginationAndSorting);
     }
 
     //    SEARCHING
-    @GetMapping("/{offset}/{pageSize}/search")
-    public APIResponse<Page<Baby>> getBabiesLikeSearch(@PathVariable int offset, @PathVariable int pageSize, @RequestParam String term) {
-        Page<Baby> babies = babyService.findBabiesLike(term, offset, pageSize);
+    @GetMapping("/search/{offset}/{pageSize}/{field}/{direction}")
+    public APIResponse<Page<Baby>> getBabiesLikeSearch(
+        @PathVariable int offset,
+        @PathVariable int pageSize,
+        @PathVariable String field,
+        @PathVariable String direction,
+        @RequestParam String term
+    ) {
+        Page<Baby> babies = babyService.findBabiesLike(offset, pageSize, field, direction, term);
         return new APIResponse<>(babies.getSize(), babies);
     }
 }

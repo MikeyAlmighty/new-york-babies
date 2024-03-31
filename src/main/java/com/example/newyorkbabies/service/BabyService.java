@@ -38,7 +38,16 @@ public class BabyService {
         return babyRepository.findAll(PageRequest.of(offset, pageSize).withSort(sort));
     }
 
-    public Page<Baby> findBabiesLike(String searchTerm, int offset, int pageSize) {
-        return babyRepository.findByFirstNameLike(searchTerm, PageRequest.of(offset, pageSize));
+    public Page<Baby> findBabiesLike(int offset, int pageSize, String field, String isAscending, String searchTerm) {
+
+        Sort sort = isAscending.equals(DIRECTION)
+            ? Sort.by(field).ascending()
+            : Sort.by(field).descending();
+
+        return babyRepository.findByFirstNameLike(
+            searchTerm,
+            PageRequest.of(offset, pageSize)
+                    .withSort(sort)
+        );
     }
 }
