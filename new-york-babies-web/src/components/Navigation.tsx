@@ -1,4 +1,5 @@
 import { useTable } from "../stores/TableContext";
+import {ChangeEvent} from "react";
 
 interface NavigationProps {
    pageNumber: number;
@@ -13,7 +14,7 @@ export const Navigation = ({ pageNumber, totalPages }: NavigationProps) => {
      updateOffset
  } = useTable();
 
-    const handleChange = ({ target }: any) => updatePageSize(target.value)
+    const handleChange = (event: any) => updatePageSize(event.target.value)
     const increaseOffset = () => updateOffset(offset + 1)
     const decreaseOffset = () => updateOffset(offset - 1)
 

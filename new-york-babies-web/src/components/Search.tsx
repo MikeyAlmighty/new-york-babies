@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, ChangeEvent} from 'react';
 import "./search.css"
 
 interface SearchInputProps {
@@ -16,7 +16,7 @@ const SearchInput = ({ onSearch }: SearchInputProps) => {
     return () => clearTimeout(delaySearch);
   }, [searchTerm, onSearch]);
 
-  const handleInputChange = ({ target }: any) => setSearchTerm(target.value);;
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value);
 
   return (
     <input

@@ -16,4 +16,4 @@ GET localhost:8080/api/baby/pagination/0/10/firstName
 
 ###
 # GET SEARCH
-GET localhost:8080/api/baby/0/10/search?term="ichae"
+GET localhost:8080/api/baby/search/0/10/firstName/ASC?term="ichae"
