@@ -21,7 +21,7 @@ export const Navigation = ({ pageNumber, totalPages }: NavigationProps) => {
         <div>
             <h3>Page: {pageNumber} / {(totalPages / pageSize) * pageSize}</h3>
             <button disabled={offset === 0} onClick={decreaseOffset}>{`< Previous`}</button>
-            <select style={{margin: "1em"}} value={pageSize} onChange={handleChange}>
+            <select value={pageSize} onChange={handleChange}>
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="100">100</option>

@@ -1,13 +1,15 @@
 td, th {
-  padding: 1em;
-  text-align: left;
+  padding: .25em;
+  text-align: center;
 }
 
 th {
   background-color: darkgreen;
+  border: .15em solid black;
   color: white;
   cursor: pointer;
 }
+
 tr {
   &:hover {
     color: white;
@@ -22,4 +24,23 @@ tr:nth-child(odd) {
 
 tr:nth-child(even) {
   background-color: #a5a2a2;
+}
+
+button {
+  background: inherit;
+  border: .125em solid darkgreen;
+  cursor: pointer;
+  color: white;
+  &:disabled {
+    border: .125em solid darkgray;
+    background-color: darkgray;
+  }
+}
+
+select {
+  margin: 1em;
+  cursor: pointer;
+  border: .125em solid darkgreen;
+  color: gray;
+  background: inherit;
 }
