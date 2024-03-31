@@ -17,8 +17,15 @@
   - `Pagination`
   - `Searching`
 
+### Development
+- `Start` (Port: `8080`)
+
 ## Front End
-### `new-york-babies-web`
 - `React`
 - `Chakra UI`
 - `TanStack Table`
+ 
+### Development
+- `cd new-york-babies-web`
+- `npm i`
+- `npm run start` (Port: `3000`)
