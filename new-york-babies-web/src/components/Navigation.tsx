@@ -1,5 +1,4 @@
 import { useTable } from "../stores/TableContext";
-import {ChangeEvent} from "react";
 
 interface NavigationProps {
    pageNumber: number;
