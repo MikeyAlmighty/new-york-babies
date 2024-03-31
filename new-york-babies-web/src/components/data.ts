@@ -1,26 +1,26 @@
-export const COLUMNS = [
+export const Data = [
     {
-        Header: "First Name",
+        label: "First Name",
         accessor: "firstName"
     },
     {
-        Header: "Year Of Birth",
+        label: "Year Of Birth",
         accessor: "yearOfBirth"
     },
     {
-        Header: "Gender",
+        label: "Gender",
         accessor: "gender"
     },
     {
-        Header: "Ethnicity",
+        label: "Ethnicity",
         accessor: "ethnicity"
     },
     {
-        Header: "Count",
+        label: "Count",
         accessor: "count"
     },
     {
-        Header: "Score",
+        label: "Score",
         accessor: "score"
     }
 ]
