@@ -29,7 +29,7 @@ tr:nth-child(even) {
 
 button {
   background: inherit;
-  border: .125em solid darkgreen;
+  border: .125em solid #313131;
   cursor: pointer;
   color: white;
   &:disabled {
@@ -41,5 +41,5 @@ button {
 select {
   margin: 1em;
   cursor: pointer;
-  border: .125em solid darkgreen;
+  border: .125em solid  #313131;
 }
