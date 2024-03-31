@@ -29,7 +29,8 @@ public class BabyService {
         return babyRepository.findAll(PageRequest.of(offset, pageSize));
     }
 
-    public Page<Baby> findAllBabiesWithPaginationAndSorting(int offset, int pageSize, String field) {
-        return babyRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(field)));
+    public Page<Baby> findAllBabiesWithPaginationAndSorting(int offset, int pageSize, String field, String isAscending) {
+        Sort sort = isAscending.equals("ASC") ? Sort.by(field).ascending(): Sort.by(field).descending();
+        return babyRepository.findAll(PageRequest.of(offset, pageSize).withSort(sort));
     }
 }

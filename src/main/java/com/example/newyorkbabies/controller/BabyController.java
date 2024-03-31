@@ -42,9 +42,9 @@ public class BabyController {
     }
 
     //    SORTING AND PAGINATING
-    @GetMapping("/pagination/{offset}/{pageSize}/{field}")
-    public APIResponse<Page<Baby>> getBabiesWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
-        Page<Baby> allBabiesWithPaginationAndSorting = babyService.findAllBabiesWithPaginationAndSorting(offset, pageSize, field);
+    @GetMapping("/pagination/{offset}/{pageSize}/{field}/{direction}")
+    public APIResponse<Page<Baby>> getBabiesWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field , @PathVariable String direction) {
+        Page<Baby> allBabiesWithPaginationAndSorting = babyService.findAllBabiesWithPaginationAndSorting(offset, pageSize, field, direction);
         return new APIResponse<>(allBabiesWithPaginationAndSorting.getSize(), allBabiesWithPaginationAndSorting);
     }
 }

@@ -7,6 +7,7 @@ import {useTable} from "../stores/TableContext";
 
 export const Table = () => {
     const [initialData, setInitialData] = useState({ pageNumber: 0, data: [], totalPages: 0});
+    const [sortOptions, setSortOptions] = useState({ isDescending: true, field: 'firstName'});
 
     const {
         sortingField,
@@ -17,18 +18,26 @@ export const Table = () => {
 
     useEffect(() => {
         fetchData();
-    }, [offset, pageSize, sortingField]);
+    }, [offset, pageSize, sortingField, sortOptions.isDescending]);
 
     const handleSort = (field: string) => {
         updateSortingField(field);
+        if (field === sortOptions.field) {
+            setSortOptions({
+                field,
+                isDescending: !sortOptions.isDescending
+            })
+        } else {
+            setSortOptions({
+                field,
+                isDescending: true
+            })
+        }
     }
-
-
-    console.log(initialData)
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}`);
+            const response = await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}/${sortOptions.isDescending ? "ASC" : "DSC"}`);
             const jsonData = await response.json();
             const data = jsonData.response.content;
             const totalElements = jsonData.response.totalPages;
@@ -49,6 +58,7 @@ export const Table = () => {
                         {Data.map(({ label, accessor }) => (
                             <th key={accessor} onClick={(e) => handleSort(accessor)}>
                                 {label}
+                                {/*{isAscending  ? <p>" up " </p> : <p> " down " </p>}*/}
                             </th>
                         ))}
                     </tr>
