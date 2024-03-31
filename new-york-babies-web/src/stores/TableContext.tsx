@@ -18,17 +18,11 @@ export const TableProvider: FC<any> = ({ children }) => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [offset, setOffset] = useState<number>(0);
 
-  const updateSortingField = (field: string) => {
-    setSortingField(field);
-  };
+  const updateSortingField = (field: string) => setSortingField(field);;
 
-  const updatePageSize = (field: number) => {
-    setPageSize(field);
-  };
+  const updatePageSize = (field: number) => setPageSize(field);;
 
-  const updateOffset = (field: number) => {
-    setOffset(field);
-  };
+  const updateOffset = (field: number) => setOffset(field);;
 
     return (
     <TableContext.Provider

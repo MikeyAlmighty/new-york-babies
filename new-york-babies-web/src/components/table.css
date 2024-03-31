@@ -32,6 +32,7 @@ button {
   border: .125em solid #313131;
   cursor: pointer;
   color: white;
+
   &:disabled {
     border: .125em solid darkgray;
     background-color: darkgray;
