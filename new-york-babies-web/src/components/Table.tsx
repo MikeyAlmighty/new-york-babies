@@ -6,7 +6,7 @@ import {Navigation} from "./Navigation";
 import {useTable} from "../stores/TableContext";
 
 export const Table = () => {
-    const [initialData, setInitialData] = useState([]);
+    const [initialData, setInitialData] = useState({ pageNumber: 0, data: [], totalPages: 0});
 
     const {
         sortingField,
@@ -19,18 +19,22 @@ export const Table = () => {
         fetchData();
     }, [offset, pageSize, sortingField]);
 
-    console.log("OFFSET: ", offset)
     const handleSort = (field: string) => {
         updateSortingField(field);
     }
+
+
+    console.log(initialData)
 
     const fetchData = async () => {
         try {
             const response = await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}`);
             const jsonData = await response.json();
-            const babyData = jsonData.response.content;
+            const data = jsonData.response.content;
+            const totalElements = jsonData.response.totalPages;
+            const pageNumber = jsonData.response.pageable.pageNumber ?? 0;
 
-            setInitialData(babyData);
+            setInitialData({ data, totalPages: totalElements, pageNumber });
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -50,7 +54,7 @@ export const Table = () => {
                     </tr>
                 </thead>
                 <tbody>
-                {initialData.map(({
+                {initialData.data?.map(({
                   id,
                   yearOfBirth,
                   gender,
@@ -82,7 +86,10 @@ export const Table = () => {
                 ))}
                 </tbody>
             </table>
-            <Navigation />
+            <Navigation
+                pageNumber={initialData.pageNumber}
+                totalPages={initialData.totalPages}
+            />
         </div>
     )
 }

@@ -29,6 +29,7 @@ export const TableProvider: FC<any> = ({ children }) => {
   const updateOffset = (field: number) => {
     setOffset(field);
   };
+
     return (
     <TableContext.Provider
         value={{
