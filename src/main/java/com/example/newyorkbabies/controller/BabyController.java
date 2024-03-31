@@ -4,10 +4,7 @@ import com.example.newyorkbabies.dto.APIResponse;
 import com.example.newyorkbabies.model.Baby;
 import com.example.newyorkbabies.service.BabyService;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +43,11 @@ public class BabyController {
     public APIResponse<Page<Baby>> getBabiesWithPaginationAndSorting(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field , @PathVariable String direction) {
         Page<Baby> allBabiesWithPaginationAndSorting = babyService.findAllBabiesWithPaginationAndSorting(offset, pageSize, field, direction);
         return new APIResponse<>(allBabiesWithPaginationAndSorting.getSize(), allBabiesWithPaginationAndSorting);
+    }
+
+    @GetMapping("/search")
+    public APIResponse<List<Baby>> getBabiesLikeSearch(@RequestParam String term) {
+        List<Baby> babies = babyService.findBabiesLike(term);
+        return new APIResponse<>(babies.size(), babies);
     }
 }

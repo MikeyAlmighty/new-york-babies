@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class BabyService {
     private final BabyRepository babyRepository;
+    String DIRECTION = "ASC";
 
     public BabyService(BabyRepository babyRepository) {
         this.babyRepository = babyRepository;
@@ -30,7 +31,14 @@ public class BabyService {
     }
 
     public Page<Baby> findAllBabiesWithPaginationAndSorting(int offset, int pageSize, String field, String isAscending) {
-        Sort sort = isAscending.equals("ASC") ? Sort.by(field).ascending(): Sort.by(field).descending();
+        Sort sort = isAscending.equals(DIRECTION)
+            ? Sort.by(field).ascending()
+            : Sort.by(field).descending();
+
         return babyRepository.findAll(PageRequest.of(offset, pageSize).withSort(sort));
+    }
+
+    public List<Baby> findBabiesLike(String searchTerm) {
+        return babyRepository.findByFirstNameLike(searchTerm);
     }
 }

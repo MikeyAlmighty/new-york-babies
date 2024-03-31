@@ -4,10 +4,12 @@ import "./table.css"
 import { Data } from './data'
 import {Navigation} from "./Navigation";
 import {useTable} from "../stores/TableContext";
+import SearchInput from "./Search";
 
 export const Table = () => {
     const [initialData, setInitialData] = useState({ pageNumber: 0, data: [], totalPages: 0});
     const [sortOptions, setSortOptions] = useState({ isDescending: true, field: 'firstName'});
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     const {
         sortingField,
@@ -18,7 +20,7 @@ export const Table = () => {
 
     useEffect(() => {
         fetchData();
-    }, [offset, pageSize, sortingField, sortOptions.isDescending]);
+    }, [offset, pageSize, sortingField, sortOptions.isDescending, searchTerm]);
 
     const handleSort = (field: string) => {
         updateSortingField(field);
@@ -37,10 +39,15 @@ export const Table = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}/${sortOptions.isDescending ? "ASC" : "DSC"}`);
+            console.log('searchTerm from State: ', searchTerm)
+            const response =
+                !searchTerm
+                    ? await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}/${sortOptions.isDescending ? "ASC" : "DSC"}`)
+                    : await fetch(`http://localhost:8080/api/baby/search?term=${searchTerm}`);
             const jsonData = await response.json();
             const data = jsonData.response.content;
             const totalElements = jsonData.response.totalPages;
+
             const pageNumber = jsonData.response.pageable.pageNumber ?? 0;
 
             setInitialData({ data, totalPages: totalElements, pageNumber });
@@ -52,6 +59,7 @@ export const Table = () => {
 
     return(
         <div style={{ display: "flex", flexDirection: "column"}}>
+            <SearchInput onSearch={setSearchTerm}/>
             <table>
                 <thead>
                     <tr>
