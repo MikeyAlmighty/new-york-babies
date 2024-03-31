@@ -7,7 +7,7 @@ import {useTable} from "../stores/TableContext";
 import SearchInput from "./Search";
 
 export const Table = () => {
-    const [initialData, setInitialData] = useState({ pageNumber: 0, data: [], totalPages: 0});
+    const [initialData, setInitialData] = useState({ pageNumber: 1, data: [], totalPages: 0});
     const [sortOptions, setSortOptions] = useState({ isDescending: true, field: 'firstName'});
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -39,18 +39,22 @@ export const Table = () => {
 
     const fetchData = async () => {
         try {
-            console.log('searchTerm from State: ', searchTerm)
             const response =
-                !searchTerm
+                !(searchTerm.length > 0)
                     ? await fetch(`http://localhost:8080/api/baby/pagination/${offset}/${pageSize}/${sortingField}/${sortOptions.isDescending ? "ASC" : "DSC"}`)
-                    : await fetch(`http://localhost:8080/api/baby/search?term=${searchTerm}`);
+                    : await fetch(`http://localhost:8080/api/baby/${offset}/${pageSize}/search?term=${searchTerm}`);
+
             const jsonData = await response.json();
             const data = jsonData.response.content;
-            const totalElements = jsonData.response.totalPages;
+            const totalPages = jsonData.response.totalPages;
 
-            const pageNumber = jsonData.response.pageable.pageNumber ?? 0;
+            const pageNumber = jsonData.response.pageable.pageNumber ?? 1;
 
-            setInitialData({ data, totalPages: totalElements, pageNumber });
+            setInitialData({
+                data,
+                totalPages,
+                pageNumber
+            });
 
         } catch (error) {
             console.error('Error fetching data:', error);

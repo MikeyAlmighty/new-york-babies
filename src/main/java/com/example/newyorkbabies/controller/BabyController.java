@@ -45,9 +45,10 @@ public class BabyController {
         return new APIResponse<>(allBabiesWithPaginationAndSorting.getSize(), allBabiesWithPaginationAndSorting);
     }
 
-    @GetMapping("/search")
-    public APIResponse<List<Baby>> getBabiesLikeSearch(@RequestParam String term) {
-        List<Baby> babies = babyService.findBabiesLike(term);
-        return new APIResponse<>(babies.size(), babies);
+    //    SEARCHING
+    @GetMapping("/{offset}/{pageSize}/search")
+    public APIResponse<Page<Baby>> getBabiesLikeSearch(@PathVariable int offset, @PathVariable int pageSize, @RequestParam String term) {
+        Page<Baby> babies = babyService.findBabiesLike(term, offset, pageSize);
+        return new APIResponse<>(babies.getSize(), babies);
     }
 }

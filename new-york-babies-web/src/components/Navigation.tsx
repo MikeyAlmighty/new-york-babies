@@ -17,16 +17,18 @@ export const Navigation = ({ pageNumber, totalPages }: NavigationProps) => {
     const increaseOffset = () => updateOffset(offset + 1)
     const decreaseOffset = () => updateOffset(offset - 1)
 
+    const pageCount = (totalPages / pageSize) * pageSize
+
     return(
         <div>
-            <h3>Page: {pageNumber} / {(totalPages / pageSize) * pageSize}</h3>
+            <h3>Page: {pageNumber + 1} / {pageCount}</h3>
             <button disabled={offset === 0} onClick={decreaseOffset}>{`< Previous`}</button>
             <select value={pageSize} onChange={handleChange}>
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="100">100</option>
             </select>
-            <button onClick={increaseOffset}>{`Next >`}</button>
+            <button disabled={pageNumber === (pageCount - 1)} onClick={increaseOffset}>{`Next >`}</button>
         </div>
     )
 }

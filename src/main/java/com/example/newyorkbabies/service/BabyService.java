@@ -38,7 +38,7 @@ public class BabyService {
         return babyRepository.findAll(PageRequest.of(offset, pageSize).withSort(sort));
     }
 
-    public List<Baby> findBabiesLike(String searchTerm) {
-        return babyRepository.findByFirstNameLike(searchTerm);
+    public Page<Baby> findBabiesLike(String searchTerm, int offset, int pageSize) {
+        return babyRepository.findByFirstNameLike(searchTerm, PageRequest.of(offset, pageSize));
     }
 }

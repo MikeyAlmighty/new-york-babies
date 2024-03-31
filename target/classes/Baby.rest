@@ -16,4 +16,4 @@ GET localhost:8080/api/baby/pagination/0/10/firstName
 
 ###
 # GET SEARCH
-GET localhost:8080/api/baby/search?term="a"
+GET localhost:8080/api/baby/search?term="ic"
