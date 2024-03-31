@@ -57,8 +57,10 @@ export const Table = () => {
                     <tr>
                         {Data.map(({ label, accessor }) => (
                             <th key={accessor} onClick={(e) => handleSort(accessor)}>
-                                {label}
-                                {/*{isAscending  ? <p>" up " </p> : <p> " down " </p>}*/}
+                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    {label}
+                                    {sortOptions.field === accessor && (!sortOptions.isDescending  ? <p>&#9650;</p> : <p>&#9660;</p>)}
+                                </span>
                             </th>
                         ))}
                     </tr>
