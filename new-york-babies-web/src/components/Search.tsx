@@ -22,7 +22,7 @@ const SearchInput = ({ onSearch }: SearchInputProps) => {
     <input
       className={"search-input"}
       type="text"
-      placeholder="Search Index..."
+      placeholder="Search Name"
       value={searchTerm}
       onChange={handleInputChange}
     />
